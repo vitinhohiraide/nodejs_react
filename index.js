@@ -1,13 +1,21 @@
 import express from "express";
-// Configurações do express
-const app = express()
-app.use(express.urlencoded({ extended: false }));
-app.use (express.json()); //permite o uso dos pacotes json
+import mongoose from "mongoose";
+import Game from "./models/games.js"
+const app = express();
 
+//importando as rotas (endpoints) de Games
+import gameRoutes from './routes/gameRoutes.js'
+
+// Configurações do express
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); //permite o uso dos pacotes json
+app.use('/', gameRoutes)
+//INICIANDO A CONEXÃO COM O BANCO DE DADOS MONGODB
+mongoose.connect("mongodb://127.0.0.1:27017/api-thegames");
 //ROTA PRINCIPAL
 app.get("/", (req, res) => {
-  const games =
-    ({
+  const games =[
+    {
       title: "Game 01",
       year: 2020,
       platform: "PC",
@@ -18,8 +26,9 @@ app.get("/", (req, res) => {
       year: 2024,
       platform: "Playstation 5",
       price: 200,
-    });
-  res.json.games;
+    },
+  ];
+  res.json(games);
 });
 
 //Iniciando o servidor

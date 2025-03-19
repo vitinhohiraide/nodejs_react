@@ -18,7 +18,7 @@ class gameService {
   }
 
   // Função para cadastrar jogos
-  async Create(title, platform, year, price) {
+  async Create(title, year, price, descriptions) {
     try {
       const newGame = new Game({
         title, //isso é a mesma coisa que title : title
@@ -42,5 +42,30 @@ class gameService {
       console.log(error);
     }
   }
+
+  async Upadate(id, title, price, year, descriptions) {
+    try {
+      await Game.findByIdAndUpdate(id, {
+        //title : title
+        title,
+        price,
+        year,
+        descriptions,
+      });
+      console.log(`Dados do game com a id: ${id} alterados com sucesso`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getOne(id) {
+    try {
+      const game = await Game.findOne({ _id: id });
+      return game;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
+
 export default new gameService();
